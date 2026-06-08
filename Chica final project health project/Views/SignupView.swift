@@ -8,8 +8,11 @@ struct SignupView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Backgrounds.gradient1
+                Image("health3")
+                    .resizable()
+                    .scaledToFill()
                     .ignoresSafeArea()
+                    .overlay(Color.black.opacity(0.5))
                 
                 VStack(spacing: 20) {
                     // Header
@@ -64,8 +67,9 @@ struct SignupView: View {
                                 .background(.white.opacity(0.7))
                                 .cornerRadius(8)
                         }
+                        .scrollContentBackground(.hidden)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 50)
                     
                     // Sign Up button
                     Button(action: {
@@ -78,7 +82,7 @@ struct SignupView: View {
                             .background(Color.green)
                             .cornerRadius(8)
                     }
-                    .padding(.horizontal, 30)
+                    .padding(.horizontal, 50)
                     .padding(.top, 10)
                     
                     Spacer()

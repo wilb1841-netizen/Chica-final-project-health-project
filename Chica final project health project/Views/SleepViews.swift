@@ -19,6 +19,11 @@ struct SleepView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     SleepSummaryCard()
                         .padding(.horizontal)
+                    
+                    Image("Image")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
                 }
                 .padding(.vertical)
             }

@@ -17,7 +17,9 @@ struct MetricCard: View {
                 Image(systemName: metric.icon)
                     .font(.title3)
                     .foregroundColor(metric.color)
+
                 Spacer()
+
                 if let trend = metric.trend {
                     TrendBadge(trend: trend)
                 }
@@ -27,6 +29,7 @@ struct MetricCard: View {
                 Text(metric.value)
                     .font(.title2.bold())
                     .foregroundColor(.primary)
+
                 Text(metric.unit)
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -39,5 +42,14 @@ struct MetricCard: View {
         .padding()
         .background(Color(.secondarySystemBackground))
         .cornerRadius(16)
+    }
+}
+
+struct TrendBadge: View {
+    let trend: Double
+
+    var body: some View {
+        Text("\(trend)%")
+            .font(.caption)
     }
 }

@@ -15,12 +15,18 @@ struct LoginView: View {
         NavigationStack {
             ZStack {
                 // Background gradient
-                LinearGradient(
-                    colors: [Color(.systemBackground), Color.blue.opacity(0.06)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+//                LinearGradient(
+//                    colors: [Color(.systemBackground), Color.blue.opacity(0.06)],
+//                    startPoint: .top,
+//                    endPoint: .bottom
+//                )
+//                .ignoresSafeArea()
+                
+                Image("health5")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    
                 
                 ScrollView {
                     VStack(spacing: 0) {
@@ -223,6 +229,7 @@ struct LoginView: View {
                         .padding(.top, 24)
                         .padding(.bottom, 40)
                     }
+                    .padding(.horizontal, 50)
                 }
                 .scrollDismissesKeyboard(.interactively)
             } // zstack
