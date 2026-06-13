@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LanguageSettingsView: View {
     @State private var selectedLanguage = "English"
+    @AppStorage("loggedInUserId") private var loggedInUserId: String = ""
 
     let languages = [
         "English",
@@ -48,6 +49,13 @@ struct LanguageSettingsView: View {
             }
             .padding()
             .navigationTitle("Language Settings")
+            .toolbar {
+                ToolbarItem(placement:.topBarTrailing) {
+                    Button("Logout") {
+                        loggedInUserId = ""
+                    }
+                }
+            }
         }
     }
 }

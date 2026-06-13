@@ -1,9 +1,3 @@
-//
-//  user.swift
-//  Chica final project health project
-//
-//  Created by Wilbert Baker on 6/3/26.
-//
 
 import Foundation
 import SwiftData
@@ -40,24 +34,3 @@ final class User: Identifiable {
     }
 }
 
-var sharedModelContainer: ModelContainer = {
-
-    let schema = Schema([
-        User.self
-    ])
-
-    do {
-        let modelConfiguration = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: false
-        )
-
-        return try ModelContainer(
-            for: schema,
-            configurations: [modelConfiguration]
-        )
-    } catch {
-        fatalError("Error setting up SwiftData: \(error)")
-    }
-
-}()

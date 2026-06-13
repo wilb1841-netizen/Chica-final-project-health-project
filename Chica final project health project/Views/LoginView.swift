@@ -1,9 +1,13 @@
 
 import SwiftUI
 import AuthenticationServices  //
+import SwiftData
 
 //
 struct LoginView: View {
+    @Environment(\.modelContext) private var modelContext
+    @AppStorage("loggedInUserId")private var loggedInUserId:String = ""
+    @State private var errorMessage: String = ""
     @State private var showSignup: Bool = false
     
     @StateObject private var vm = LoginViewModel()
@@ -62,6 +66,8 @@ struct LoginView: View {
                         // MARK: Form Card
                         VStack(spacing: 16) {
                             
+                        
+                            
                             // Email field
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Email")
@@ -72,7 +78,7 @@ struct LoginView: View {
                                 
                                 HStack(spacing: 10) {
                                     Image(systemName: "envelope")
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(.black)
                                         .frame(width: 20)
                                     TextField("name@example.com", text: $vm.email)
                                         .keyboardType(.emailAddress)
@@ -166,7 +172,7 @@ struct LoginView: View {
                             }
                             
                             // Sign In button
-                            Button(action: { vm.login() }) {
+                            Button(action: performLogin) {
                                 ZStack {
                                     if vm.isLoading {
                                         ProgressView()
@@ -174,7 +180,7 @@ struct LoginView: View {
                                     } else {
                                         Text("Sign In")
                                             .font(.headline)
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.black)
                                     }
                                 }
                                 .frame(maxWidth: .infinity)
@@ -212,13 +218,13 @@ struct LoginView: View {
                         .padding(24)
                         .background(Color(.systemBackground))
                         .cornerRadius(24)
-                        .shadow(color: .black.opacity(0.06), radius: 20, x: 0, y: 4)
+                        .shadow(color: .black.opacity(0.12), radius: 20, x: 0, y: 4)
                         .padding(.horizontal, 20)
                         
                         // Sign up link
                         HStack(spacing: 4) {
                             Text("Don't have an account?")
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.black)// was secondary
                             Button("Sign up") {
                                 showSignup = true
                             }
@@ -241,5 +247,46 @@ struct LoginView: View {
 //        .fullScreenCover(isPresented: $vm.isLoggedIn) {
 //            MainView() // Replace with your main app view
 //        }
+    }
+    
+    func hideError() {
+        errorMessage = ""
+    }
+    
+    func performLogin() {
+        // validations
+        guard !vm.email.isEmpty else {
+            errorMessage = "Email is required"
+            return
+        }
+        
+        guard vm.password.count >= 6 else {
+            errorMessage = "Password must have at least 6 characters"
+            return
+        }
+        
+        // check the email
+        let userEmail = vm.email
+        let descriptor = FetchDescriptor<User>(
+            predicate: #Predicate<User> {
+                $0.email == userEmail
+            }
+        )
+        
+        guard let users = try? modelContext.fetch(descriptor), let user = users.first else {
+            errorMessage = "Invalid email"
+            return
+        }
+        
+        // check the password
+        let hashedPassword = User.hashPassword(vm.password)
+        guard hashedPassword == user.password else {
+            errorMessage = "Invalid password"
+            return
+        }
+        
+        // login
+        hideError()
+        loggedInUserId = user.id.uuidString
     }
 }
