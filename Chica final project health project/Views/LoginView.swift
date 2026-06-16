@@ -209,7 +209,7 @@ struct LoginView: View {
                             SignInWithAppleButton(.signIn) { request in
                                 request.requestedScopes = [.fullName, .email]
                             } onCompletion: { result in
-                                vm.loginWithApple(result)
+                                handleSignInResult(result)
                             }
                             .signInWithAppleButtonStyle(.black)
                             .frame(height: 52)
@@ -247,6 +247,27 @@ struct LoginView: View {
 //        .fullScreenCover(isPresented: $vm.isLoggedIn) {
 //            MainView() // Replace with your main app view
 //        }
+    }
+    
+    private func handleSignInResult(
+        _ result: Result<ASAuthorization, Error>
+    ) {
+        print(result)
+        
+        switch result {
+        case .success(let authorization):
+
+            if let credential =
+                authorization.credential as? ASAuthorizationAppleIDCredential {
+                let userID = credential.user
+                loggedInUserId = userID
+            }
+
+        case .failure(let error):
+            print(error.localizedDescription)
+            
+    
+        }
     }
     
     func hideError() {
