@@ -12,8 +12,21 @@ import Combine
 struct DailyGoal: Identifiable {
     let id = UUID()
     let title: String
-    let current: Double
+    var current: Double
     let target: Double
     let unit: String
     let color: Color
+
+    var progress: Double {
+        guard target > 0 else { return 0 }
+        return min(current / target, 1.0)
+    }
+
+    var isComplete: Bool {
+        current >= target
+    }
+
+    var remaining: Double {
+        max(target - current, 0)
+    }
 }

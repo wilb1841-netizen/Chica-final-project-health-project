@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-
 struct DailyGoalsSection: View {
     let goals: [DailyGoal]
     var body: some View {
