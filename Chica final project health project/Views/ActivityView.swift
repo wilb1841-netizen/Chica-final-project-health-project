@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ActivityView: View {
     @ObservedObject var vm: HealthTrackerViewModel
+    @Query(sort: \WorkoutEntry.date, order: .reverse) private var workouts: [WorkoutEntry]
     @State private var isShowingAddActivity = false
 
     var body: some View {
@@ -22,7 +24,7 @@ struct ActivityView: View {
 
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(title: "All Workouts")
-                        ForEach(vm.workouts) { workout in
+                        ForEach(workouts) { workout in
                             WorkoutRow(workout: workout)
                         }
                     }
@@ -33,15 +35,13 @@ struct ActivityView: View {
             .navigationTitle("Activity")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) { 
-                        Button(action: { isShowingAddActivity = true }) {
+                    Button(action: { isShowingAddActivity = true }) {
                         Image(systemName: "plus")
                     }
                 }
             }
             .sheet(isPresented: $isShowingAddActivity) {
-                AddActivityView { workout in
-                    vm.addWorkout(workout)
-                }
+                AddActivityView()
             }
         }
     }

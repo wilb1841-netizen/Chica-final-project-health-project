@@ -11,6 +11,7 @@ struct Chica_final_project_health_projectApp: App {
 
         let schema = Schema([
             User.self,
+            WorkoutEntry.self,
             
         ])
 

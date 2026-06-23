@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct AddActivityView: View { static func <;\>
+struct AddActivityView: View {
     @Environment(\.dismiss) private var dismiss
-
-    let onSave: (WorkoutEntry) -> Void
+    @Environment(\.modelContext) private var modelContext
 
     @State private var activityName = ""
     @State private var selectedType = ActivityType.running
@@ -18,6 +18,7 @@ struct AddActivityView: View { static func <;\>
     @State private var durationMinutes = 30
     @State private var calories = 200
     @State private var notes = ""
+    @State private var errorMessage: String?
 
     private var canSave: Bool {
         !activityName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -80,7 +81,23 @@ struct AddActivityView: View { static func <;\>
             .onChange(of: selectedType) { _, newType in
                 activityName = newType.defaultName
             }
+            .alert("Could not save activity", isPresented: hasSaveError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(errorMessage ?? "Please try again.")
+            }
         }
+    }
+
+    private var hasSaveError: Binding<Bool> {
+        Binding(
+            get: { errorMessage != nil },
+            set: { isShowing in
+                if !isShowing {
+                    errorMessage = nil
+                }
+            }
+        )
     }
 
     private func saveActivity() {
@@ -94,8 +111,15 @@ struct AddActivityView: View { static func <;\>
             notes: notes.trimmingCharacters(in: .whitespacesAndNewlines)
         )
 
-        onSave(workout)
-        dismiss()
+        modelContext.insert(workout)
+
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            modelContext.rollback()
+            errorMessage = error.localizedDescription
+        }
     }
 }
 
@@ -148,5 +172,6 @@ private enum ActivityType: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    AddActivityView { _ in }
+    AddActivityView()
+        .modelContainer(for: WorkoutEntry.self, inMemory: true)
 }

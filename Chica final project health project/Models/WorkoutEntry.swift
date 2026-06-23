@@ -5,19 +5,22 @@
 //  Created by Wilbert Baker on 5/30/26.
 
 
-import SwiftUI
+import Foundation
+import SwiftData
 
-struct WorkoutEntry: Identifiable {
-    let id = UUID()
-    let name: String
-    let type: String
-    let duration: Int
-    let calories: Int
-    let date: Date
-    let icon: String
-    let notes: String
+@Model
+final class WorkoutEntry: Identifiable {
+    var id: UUID
+    var name: String
+    var type: String
+    var duration: Int
+    var calories: Int
+    var date: Date
+    var icon: String
+    var notes: String
 
     init(
+        id: UUID = UUID(),
         name: String,
         type: String = "",
         duration: Int,
@@ -26,6 +29,7 @@ struct WorkoutEntry: Identifiable {
         icon: String,
         notes: String = ""
     ) {
+        self.id = id
         self.name = name
         self.type = type
         self.duration = duration
