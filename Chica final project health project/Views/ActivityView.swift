@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActivityView: View {
     @ObservedObject var vm: HealthTrackerViewModel
+    @State private var isShowingAddActivity = false
 
     var body: some View {
         NavigationView {
@@ -31,10 +32,15 @@ struct ActivityView: View {
             }
             .navigationTitle("Activity")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {}) {
+                ToolbarItem(placement: .navigationBarTrailing) { 
+                        Button(action: { isShowingAddActivity = true }) {
                         Image(systemName: "plus")
                     }
+                }
+            }
+            .sheet(isPresented: $isShowingAddActivity) {
+                AddActivityView { workout in
+                    vm.addWorkout(workout)
                 }
             }
         }

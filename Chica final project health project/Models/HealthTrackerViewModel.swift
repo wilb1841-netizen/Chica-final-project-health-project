@@ -194,6 +194,10 @@ class HealthTrackerViewModel: ObservableObject {
     }
  
     // MARK: - Helpers
+
+    func addWorkout(_ workout: WorkoutEntry) {
+        workouts.insert(workout, at: 0)
+    }
  
     /// Progress value 0.0 – 1.0 for a given goal
     func progress(for goal: DailyGoal) -> Double {
