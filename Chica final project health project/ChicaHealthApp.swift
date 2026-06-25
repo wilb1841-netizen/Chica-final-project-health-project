@@ -5,6 +5,7 @@ import SwiftData
 @main
 struct Chica_final_project_health_projectApp: App {
     @AppStorage("loggedInUserId") private var loggedInUserId: String = ""
+    @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
     
     
     var sharedModelContainer: ModelContainer = {
@@ -37,6 +38,8 @@ struct Chica_final_project_health_projectApp: App {
         WindowGroup {
             if !loggedInUserId.isEmpty {
                 MainView()
+            } else if !hasSeenWelcome {
+                WelcomeView()
             } else {
                 LoginView()
             }
