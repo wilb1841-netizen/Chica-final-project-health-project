@@ -7,7 +7,7 @@ struct WelcomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("health1")
+                Image("health4")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
