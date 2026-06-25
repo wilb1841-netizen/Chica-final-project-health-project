@@ -25,6 +25,11 @@ struct MainView: View {
                 .tabItem {
                     Label("Sleep", systemImage: "bed.double.fill")
                 }
+
+            PaymentPlanView()
+                .tabItem {
+                    Label("Plan", systemImage: "creditcard.fill")
+                }
             
             LanguageSettingsView()
                 .tabItem {
