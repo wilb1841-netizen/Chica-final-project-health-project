@@ -5,7 +5,7 @@ import SwiftData
 @main
 struct Chica_final_project_health_projectApp: App {
     @AppStorage("loggedInUserId") private var loggedInUserId: String = ""
-    @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
+    @AppStorage("hasSeenWelcome2") private var hasSeenWelcome = false
     
     
     var sharedModelContainer: ModelContainer = {
