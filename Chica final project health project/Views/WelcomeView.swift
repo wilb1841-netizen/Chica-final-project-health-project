@@ -3,11 +3,12 @@ import SwiftUI
 struct WelcomeView: View {
     @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
     @State private var showSignup = false
+    @State private var gotoHome = false
 
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("health 4")
+                Image("health4")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -42,10 +43,12 @@ struct WelcomeView: View {
                             .foregroundStyle(.white.opacity(0.88))
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    .padding(.horizontal, 100)
 
                     VStack(spacing: 12) {
                         Button {
                             hasSeenWelcome = true
+                            gotoHome = true
                         } label: {
                             Label("Get Started", systemImage: "arrow.right")
                                 .font(.headline)
@@ -55,7 +58,11 @@ struct WelcomeView: View {
                                 .background(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
-
+                        .navigationDestination(isPresented: $gotoHome){
+                                LoginView()
+                        }
+                        
+                        
                         Button {
                             showSignup = true
                         } label: {
